@@ -1,0 +1,1 @@
+g++ .\app.cpp .\src\winfiledialog.cpp .\src\ttutile.cpp -Iinclude -lshell32 -lole32 -lcomdlg32 -o build/app
