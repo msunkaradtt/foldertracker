@@ -21,12 +21,15 @@ int main(){
     std::vector<std::string> out;
     myUtile.tokenize(folderPathstr, DELIM, out);
 
-    std::map<std::string, std::string> folderMap;
+    std::map<std::string, std::string> folderMapIn;
+
     std::string folderName = out.back();
+    folderMapIn[folderName] = folderPathstr;
 
-    folderMap[folderName] = folderPathstr;
+    myUtile.savejson(folderMapIn);
 
-    myUtile.savejson(folderMap);
+    std::map<std::string, std::string> folderMapOut;
+    myUtile.readjson(folderMapOut);
 
     return 0;
 }

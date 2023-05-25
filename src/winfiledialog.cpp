@@ -16,7 +16,6 @@ void winfiledialog::open(char* outStr){
     LPITEMIDLIST pidl = SHBrowseForFolderA(&bi);
     if (pidl != NULL) {
         if (SHGetPathFromIDListA(pidl, outStr)) {
-            printf("Selected folder: %s\n", outStr);
         } else {
             printf("Error getting folder path.\n");
         }
