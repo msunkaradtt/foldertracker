@@ -3,7 +3,6 @@
 #include<windows.h>
 #include<shlobj.h>
 
-
 class winfiledialog
 {
     private:

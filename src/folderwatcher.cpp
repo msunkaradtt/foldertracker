@@ -1,15 +1,14 @@
 #include "folderwatcher.h"
 
-FolderWatcher::FolderWatcher(std::string path_to_watch, std::chrono::duration<int, std::milli> delay){
+FolderWatcher::FolderWatcher(std::string path_to_watch){ //std::chrono::duration<int, std::milli> delay
     this->path_to_watch = path_to_watch;
-    this->delay = delay;
+
     for(auto &file : std::filesystem::recursive_directory_iterator(path_to_watch)){
         this->paths_[file.path().string()] = std::filesystem::last_write_time(file);
     }
 }
 
-void FolderWatcher::start(){
-    std::this_thread::sleep_for(this->delay);
+void FolderWatcher::check(){
 
     auto it = this->paths_.begin();
     while(it != this->paths_.end()){

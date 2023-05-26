@@ -1,7 +1,5 @@
 #include "winfiledialog.h"
 
-#include <windows.h>
-#include <shlobj.h>
 #include <iostream>
 
 winfiledialog::winfiledialog(){}

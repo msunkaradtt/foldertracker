@@ -4,6 +4,8 @@
 
 #include <iostream>
 #include <map>
+#include <thread>
+#include <chrono>
 
 /*
 Global Variables
@@ -13,7 +15,7 @@ const char DELIM = '\\';
 /*
 UI Functions
 */
-void selectSelection(int selection);
+bool selectSelection(int selection);
 void printTrackedFolders();
 /*
 App Functions
@@ -35,33 +37,33 @@ int main(){
         std::cout << "**********************************\n";
         std::cout << "Enter your choice:\n";
         std::cin >> selection;
-    }while(selection > 4 || selection < 1);
-
-    selectSelection(selection);
-
-    /*std::map<std::string, std::string> folderMapOut;
-    myUtile.readjson(folderMapOut);*/
+    }while(!selectSelection(selection));
 
     return 0;
 }
 
-void selectSelection(int selection){
+bool selectSelection(int selection){
     switch (selection)
     {
     case 1:
     startTracking();
+    return false;
     break;
     case 2:
     addFile();
+    return false;
     break;
     case 3:
     printTrackedFolders();
+    return false;
     break;
     case 4:
-    std::cout << "Quit" << selection << '\n';
+    std::cout << "Quit" << '\n';
+    return true;
     break;
     default:
-    std::cout << "Selected option not accepted" << selection << '\n';
+    std::cout << "Selected option not accepted " << selection << '\n';
+    return false;
     break;
     }
 }
@@ -70,8 +72,9 @@ void printTrackedFolders(){
     ttutile myUtile;
     std::map<std::string, std::string> folderMapOut;
     myUtile.readjson(folderMapOut);
+
+    std::cout << "The Following Folders Are Tracked" << '\n';
     for(auto& pair : folderMapOut){
-        std::cout << "The Following Folders Are Tracked" << '\n';
         std::cout << "--------------------------------------" << '\n';
         std::cout << pair.second << '\n';
         std::cout << "--------------------------------------" << '\n';
@@ -86,14 +89,15 @@ void startTracking(){
 
     std::vector<FolderWatcher> trackerClass;
     for(auto &pair : folderMapOut){
-        FolderWatcher folderW {pair.second, std::chrono::milliseconds(1000)};
+        FolderWatcher folderW {pair.second};
         trackerClass.push_back(folderW);
     }
 
     bool running = true;
     while(running){
         for(auto &ele : trackerClass){
-            ele.start();
+            std::this_thread::sleep_for(std::chrono::microseconds(1000));
+            ele.check();
         }
     }
 }
