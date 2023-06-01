@@ -12,6 +12,14 @@ Global Variables
 */
 const char DELIM = '\\';
 
+struct folderTime
+{
+    int sec;
+    int min;
+    int hr;
+};
+
+
 /*
 UI Functions
 */
@@ -88,16 +96,33 @@ void startTracking(){
     myUtile.readjson(folderMapOut);
 
     std::vector<FolderWatcher> trackerClass;
+    std::map<std::string, folderTime> folderTimeOut;
     for(auto &pair : folderMapOut){
-        FolderWatcher folderW {pair.second};
+        FolderWatcher folderW {pair.second, pair.first};
         trackerClass.push_back(folderW);
+        folderTime tim;
+        tim.sec = 0;
+        tim.min = 0;
+        tim.hr = 0;
+        folderTimeOut[pair.first] = tim;
     }
 
     bool running = true;
     while(running){
         for(auto &ele : trackerClass){
-            std::this_thread::sleep_for(std::chrono::microseconds(1000));
-            ele.check();
+            std::this_thread::sleep_for(std::chrono::microseconds(5000));
+            folderTime checkTim = folderTimeOut[ele.folderName];
+            ele.check(checkTim.hr, checkTim.min, checkTim.sec, ele.folderName);
+
+            folderTimeOut[ele.folderName].hr = checkTim.hr;
+            folderTimeOut[ele.folderName].min = checkTim.min;
+            folderTimeOut[ele.folderName].sec = checkTim.sec;
+
+            /*std::system("clear");
+            std::cout << ele.folderName << " - "
+            << folderTimeOut[ele.folderName].hr << ":" <<
+            folderTimeOut[ele.folderName].min << ":" <<
+            folderTimeOut[ele.folderName].sec << '\n';*/
         }
     }
 }
