@@ -117,12 +117,6 @@ void startTracking(){
             folderTimeOut[ele.folderName].hr = checkTim.hr;
             folderTimeOut[ele.folderName].min = checkTim.min;
             folderTimeOut[ele.folderName].sec = checkTim.sec;
-
-            /*std::system("clear");
-            std::cout << ele.folderName << " - "
-            << folderTimeOut[ele.folderName].hr << ":" <<
-            folderTimeOut[ele.folderName].min << ":" <<
-            folderTimeOut[ele.folderName].sec << '\n';*/
         }
     }
 }
